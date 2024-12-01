@@ -13,9 +13,11 @@
         <!-- Styles / Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="font-sans antialiased dark:bg-black dark:text-white/50">
-        <div class="bg-gray-50 text-black/50 dark:bg-black dark:text-white/50">
-            Results day 1: {{ $day1 }}
-        </div>
+    <body class="font-sans antialiased dark:bg-black dark:text-white/50 p-3 bg-green-900">
+        <x-card 
+            title="Day 1"
+            part1Result="{{ $day1 }}"
+            part2Result="{{ $day1PartTwo }}"
+        />
     </body>
 </html>
