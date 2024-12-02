@@ -1,4 +1,4 @@
-<div class="max-w-sm rounded overflow-hidden shadow-lg bg-white p-6">
+<div class="max-w-sm rounded overflow-hidden shadow-lg bg-white p-6 mb-6">
     <h2 class="text-2xl font-semibold mb-4">{{ $title }}</h2>
     
     <div class="grid grid-cols-2 gap-6">

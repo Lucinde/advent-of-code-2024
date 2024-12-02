@@ -19,5 +19,10 @@
             part1Result="{{ $day1 }}"
             part2Result="{{ $day1PartTwo }}"
         />
+        <x-card 
+            title="Day 2"
+            part1Result="{{ $day2 }}"
+            part2Result="Not enough time"
+        />
     </body>
 </html>
