@@ -14,12 +14,14 @@ class AdventController extends Controller
         $day1PartTwo = $this->day1PartTwo();
         $day2 = $this->day2();
         $day3 = $this->day3();
+        $day3PartTwo = $this->day3PartTwo();
 
         return view('welcome', compact(
             'day1', 
             'day1PartTwo', 
             'day2',
-            'day3'));
+            'day3',
+            'day3PartTwo'));
     }
 
     public function day1(): int {
@@ -140,6 +142,38 @@ class AdventController extends Controller
             return $carry + ($item['x'] * $item['y']);
         }, 0);
 
+        return $sum;
+    }
+
+    public function day3PartTwo():int {
+        $filePath = storage_path('/app/public/sources/advent3.txt');
+        $content = File::get($filePath);
+    
+        // Regular expression to match mul(x,y), do(), and don't() patterns
+        preg_match_all('/mul\((\d+),(\d+)\)|do\(\)|don\'t\(\)/', $content, $matches, PREG_SET_ORDER);
+    
+        $results = collect();
+        $doSection = true;
+    
+        foreach ($matches as $match) {
+            if (isset($match[0])) {
+                if ($match[0] === "do()") {
+                    $doSection = true;
+                } elseif ($match[0] === "don't()") {
+                    $doSection = false;
+                } elseif ($doSection && preg_match('/mul\((\d+),(\d+)\)/', $match[0])) {
+                    $x = (int)$match[1];
+                    $y = (int)$match[2];
+                    $results->push(['x' => $x, 'y' => $y]);
+                }
+            }
+        }
+    
+        // Sum all the results
+        $sum = $results->reduce(function ($carry, $item) {
+            return $carry + ($item['x'] * $item['y']);
+        }, 0);
+    
         return $sum;
     }
 
