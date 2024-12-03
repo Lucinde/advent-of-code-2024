@@ -13,8 +13,13 @@ class AdventController extends Controller
         $day1 = $this->day1();
         $day1PartTwo = $this->day1PartTwo();
         $day2 = $this->day2();
+        $day3 = $this->day3();
 
-        return view('welcome', compact('day1', 'day1PartTwo', 'day2'));
+        return view('welcome', compact(
+            'day1', 
+            'day1PartTwo', 
+            'day2',
+            'day3'));
     }
 
     public function day1(): int {
@@ -113,6 +118,29 @@ class AdventController extends Controller
         }
 
         return $safeLevels;       
+    }
+
+    public function day3(): int  {
+        $filePath = storage_path('/app/public/sources/advent3.txt');
+        $content = File::get($filePath);
+
+        // Regular expression to match mul(x,y) patterns
+        preg_match_all('/mul\((\d+),(\d+)\)/', $content, $matches, PREG_SET_ORDER);
+
+        $results = collect();
+
+        foreach ($matches as $match) {
+            $x = (int)$match[1];
+            $y = (int)$match[2];
+            $results->push(['x' => $x, 'y' => $y]);
+        }
+
+        // sum all the results 
+        $sum = $results->reduce(function ($carry, $item) {
+            return $carry + ($item['x'] * $item['y']);
+        }, 0);
+
+        return $sum;
     }
 
 }

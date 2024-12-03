@@ -24,5 +24,10 @@
             part1Result="{{ $day2 }}"
             part2Result="Not enough time"
         />
+        <x-card 
+            title="Day 3"
+            part1Result="{{ $day3 }}"
+            part2Result="Not enough time"
+        />
     </body>
 </html>
