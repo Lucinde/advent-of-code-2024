@@ -16,6 +16,7 @@ class AdventController extends Controller
         $day3 = $this->day3();
         $day3PartTwo = $this->day3PartTwo();
         $day4 = $this->day4();
+        $day4PartTwo = $this->day4PartTwo();
 
         return view('welcome', compact(
             'day1', 
@@ -23,7 +24,8 @@ class AdventController extends Controller
             'day2',
             'day3',
             'day3PartTwo',
-            'day4'));
+            'day4',
+            'day4PartTwo'));
     }
 
     public function day1(): int {
@@ -189,7 +191,7 @@ class AdventController extends Controller
 
         $rowCount = count($grid);
         $colCount = count($grid[0]);
-        $word = "XMAS";
+        $word = "MAS";
         $wordLength = strlen($word);
         $count = 0;
 
@@ -237,6 +239,50 @@ class AdventController extends Controller
         }
 
         return $count;
+    }
+
+    public function day4PartTwo() {
+        // Read the content of the file
+        $filePath = storage_path('/app/public/sources/advent4.txt');
+        $content = File::get($filePath);
+
+        // Split the file into rows to form the grid
+        $grid = array_map('str_split', explode("\n", trim($content)));
+
+        $rowCount = count($grid);
+        $colCount = count($grid[0]);
+        $patternCount = 0;
+
+        // check if a MAS sequence exists 
+        $checkMAS = function ($grid, $x, $y, $dx, $dy) {
+            $word = '';
+            for ($i = 0; $i < 3; $i++) {
+                $nx = $x + $i * $dx;
+                $ny = $y + $i * $dy;
+
+                // Check bounds
+                if ($nx < 0 || $nx >= count($grid) || $ny < 0 || $ny >= count($grid[0])) {
+                    return false;
+                }
+
+                $word .= $grid[$nx][$ny];
+            }
+            return $word === "MAS" || $word === "SAM"; // Allow forwards or backwards
+        };
+
+        // Iterate through the grid to find X-MAS patterns
+        for ($x = 1; $x < $rowCount - 1; $x++) { 
+            for ($y = 1; $y < $colCount - 1; $y++) { 
+                if (
+                    $checkMAS($grid, $x - 1, $y - 1, 1, 1) && // Top-left to bottom-right
+                    $checkMAS($grid, $x - 1, $y + 1, 1, -1)    // Top-right to bottom-left
+                ) {
+                    $patternCount++;
+                }
+            }
+        }
+
+        return $patternCount;
     }
 
 }

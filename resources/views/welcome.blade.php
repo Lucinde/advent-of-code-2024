@@ -32,7 +32,7 @@
         <x-card 
             title="Day 4"
             part1Result="{{ $day4 }}"
-            part2Result="{{ $day3PartTwo }}"
+            part2Result="{{ $day4PartTwo }}"
         />
     </body>
 </html>
