@@ -15,13 +15,15 @@ class AdventController extends Controller
         $day2 = $this->day2();
         $day3 = $this->day3();
         $day3PartTwo = $this->day3PartTwo();
+        $day4 = $this->day4();
 
         return view('welcome', compact(
             'day1', 
             'day1PartTwo', 
             'day2',
             'day3',
-            'day3PartTwo'));
+            'day3PartTwo',
+            'day4'));
     }
 
     public function day1(): int {
@@ -175,6 +177,66 @@ class AdventController extends Controller
         }, 0);
     
         return $sum;
+    }
+
+    public function day4() {
+        // Read the content of the file
+        $filePath = storage_path('/app/public/sources/advent4.txt');
+        $content = File::get($filePath);
+
+        // Split the file into rows to form the grid
+        $grid = array_map('str_split', explode("\n", trim($content)));
+
+        $rowCount = count($grid);
+        $colCount = count($grid[0]);
+        $word = "XMAS";
+        $wordLength = strlen($word);
+        $count = 0;
+
+        // Define the directions (x, y)
+        $directions = [
+            [0, 1],  // Right
+            [1, 0],  // Down
+            [1, 1],  // Down-right diagonal
+            [1, -1], // Down-left diagonal
+            [0, -1], // Left (backward)
+            [-1, 0], // Up (backward)
+            [-1, -1], // Up-left diagonal
+            [-1, 1],  // Up-right diagonal
+        ];
+
+        // check if the word exists in the grid 
+        $findWord = function ($x, $y, $dx, $dy) use ($grid, $rowCount, $colCount, $wordLength, $word) {
+            for ($i = 0; $i < $wordLength; $i++) {
+                $nx = $x + $i * $dx;
+                $ny = $y + $i * $dy;
+
+                // Check bounds
+                if ($nx < 0 || $nx >= $rowCount || $ny < 0 || $ny >= $colCount) {
+                    return false;
+                }
+
+                // Check character
+                if ($grid[$nx][$ny] !== $word[$i]) {
+                    return false;
+                }
+            }
+            return true;
+        };
+
+        // Iterate over each cell in the grid
+        for ($x = 0; $x < $rowCount; $x++) {
+            for ($y = 0; $y < $colCount; $y++) {
+                // Check in all directions
+                foreach ($directions as [$dx, $dy]) {
+                    if ($findWord($x, $y, $dx, $dy)) {
+                        $count++;
+                    }
+                }
+            }
+        }
+
+        return $count;
     }
 
 }
