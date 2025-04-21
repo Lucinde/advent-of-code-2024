@@ -14,6 +14,7 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="font-sans antialiased dark:bg-black dark:text-white/50 p-3 bg-green-900">
+        <div class="flex gap-4 flex-wrap w-full">
         <x-card 
             title="Day 1"
             part1Result="{{ $day1 }}"
@@ -34,5 +35,7 @@
             part1Result="{{ $day4 }}"
             part2Result="{{ $day4PartTwo }}"
         />
+        </div>
+        <livewire:fuel-calculator />
     </body>
 </html>
